@@ -6,7 +6,7 @@ const searchPhone = () => {
     const searchText = searchField.value;
     searchField.value = "";
     if (searchText == "") {
-        errorText.style.display = 'block';
+        errorText.style.display = "block";
         errorText.innerHTML = "Please write your phone name to search"
         phoneDetails.innerHTML = "";
         searchResult.textContent = "";
@@ -19,8 +19,15 @@ const searchPhone = () => {
 }
 
 
+const phoneDetails = document.getElementById("display-details");
 const displaySearchResults = phones => {
     const searchResult = document.getElementById("search-result");
+    searchResult.textContent = "";
+    phoneDetails.innerHTML = "";
+    if (phones.length == 0) {
+        errorText.innerHTML = "No phone/device found according to your search"
+        errorText.style.display = "block";
+    }
     phones.forEach(phone => {
         const div = document.createElement("div");
         div.classList.add("col");
@@ -36,7 +43,7 @@ const displaySearchResults = phones => {
     </div>
         `;
         searchResult.appendChild(div);
-        errorText.style.display= "none";
+        errorText.style.display = "none";
     })
 }
 
@@ -51,47 +58,43 @@ const loadDetails = phoneId => {
 
 
 const displayPhoneDetails = details => {
-    console.log(details);
-    const phoneDetails = document.getElementById("display-details");
     const div = document.createElement("div");
     div.classList.add("card", "container", "align-items-center", "my-4");
 
-    // storing data with error handling when data is not available 
-    const mainFeatures = details.mainFeatures ? details.mainFeatures: "";
-    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors: "";
-    const other = details.others ? details.others: "";
+    // data storing by error handling
+    const mainFeatures = details.mainFeatures ? details.mainFeatures : "";
+    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors : "";
+    const other = details.others ? details.others : "";
 
-    // clearing previous data shown on page
-    phoneDetails.innerHTML= "";
-    errorText.style.display= "none";
-    // scrolling to top
+    phoneDetails.innerHTML = "";
+    errorText.style.display = "none";
+
+    // scroll to top
     window.scrollTo(0, 250);
 
-    // pushing data into html element
     div.innerHTML = `
-    
     <div class="card-body bg-light rounded ">
     <img src="${details.data.image}" class="card-img-top mx-auto d-block w-50 my-2" alt="...">
         <h5 class="card-title">Device Name: ${details.name}</h5>
         <p class="card-text"><strong>Brand</strong>: ${details.brand}</p>
-        <p class="card-text"><strong>Release Date</strong>: ${details.releaseDate ? details.releaseDate: "No release Date found"}</p>
+        <p class="card-text"><strong>Release Date</strong>: ${details.releaseDate ? details.releaseDate : "No release Date found"}</p>
         <p><strong>Main Features: </strong></p>
         <ul class="list-group list-unstyled">
-            <li>Chipset: ${mainFeatures.chipSet ? mainFeatures.chipSet: " "}</li>
-            <li>Display-Size: ${mainFeatures.displaySize ? mainFeatures.displaySize: " "}</li>
-            <li>Memory : ${mainFeatures.memory ? mainFeatures.memory: " "}</li>
-            <li>Storage : ${mainFeatures.storage ? mainFeatures.storage: " "}</li>
+            <li>Chipset: ${mainFeatures.chipSet ? mainFeatures.chipSet : " "}</li>
+            <li>Display-Size: ${mainFeatures.displaySize ? mainFeatures.displaySize : " "}</li>
+            <li>Memory : ${mainFeatures.memory ? mainFeatures.memory : " "}</li>
+            <li>Storage : ${mainFeatures.storage ? mainFeatures.storage : " "}</li>
         </ul>
         <br>
-        <p><strong>Sensors: </strong>  ${sensor.join()}</p>
+        <p><strong>Sensors: </strong>${sensor.join()}</p>
         <p><strong>Other Informations: </strong></p>
         <ul class="list-group list-unstyled">
-            <li>Bluetooth : ${other.Bluetooth ? other.Bluetooth: "No"}</li>
-            <li>GPS: ${other.GPS ? other.GPS: "No"}</li>
-            <li>NFC: ${other.NFC ? other.NFC: "No"} </li>
+            <li>Bluetooth : ${other.Bluetooth ? other.Bluetooth : "No"}</li>
+            <li>GPS: ${other.GPS ? other.GPS : "No"}</li>
+            <li>NFC: ${other.NFC ? other.NFC : "No"} </li>
             <li>Radio: ${other.Radio ? other.Radio : "No"}</li>
-            <li>USB: ${other.USB ? other.USB: "No"} </li>
-            <li>WLAN: ${other.WLAN ? other.WLAN: "No"} </li>
+            <li>USB: ${other.USB ? other.USB : "No"} </li>
+            <li>WLAN: ${other.WLAN ? other.WLAN : "No"} </li>
         </ul>
     </div>
     `;
