@@ -62,8 +62,8 @@ const displayPhoneDetails = details => {
     div.classList.add("card", "container", "align-items-center", "my-4");
 
     // data storing by error handling
-    const mainFeatures = details.mainFeatures ? details.mainFeatures : "";
-    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors : "";
+    const mainFeatures = details.mainFeatures ? details.mainFeatures: "";
+    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors: "";
     const other = details.others ? details.others : "";
 
     phoneDetails.innerHTML = "";
