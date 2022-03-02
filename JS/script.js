@@ -1,10 +1,13 @@
 const errorText = document.getElementById("error");
 errorText.style.display = "none";
 
+// searching phones
 const searchPhone = () => {
     const searchField = document.getElementById("search-field");
     const searchText = searchField.value;
     searchField.value = "";
+
+    // error handling
     if (searchText == "") {
         errorText.style.display = "block";
         errorText.innerHTML = "Please write your phone name to search"
@@ -18,7 +21,7 @@ const searchPhone = () => {
     }
 }
 
-
+// showing phone details
 const phoneDetails = document.getElementById("display-details");
 const displaySearchResults = phones => {
     const searchResult = document.getElementById("search-result");
@@ -32,7 +35,7 @@ const displaySearchResults = phones => {
         const div = document.createElement("div");
         div.classList.add("col");
         div.innerHTML = `
-        <div class="card rounded-3 align-items-center" style="background-color: lavender;">
+        <div class="card rounded-3 align-items-center bg-white shadow p-3 bg-body rounded">
         <img src="${phone.image}" class="card-img-top w-75" alt="...">
         <div class="card-body">
           <h5 class="card-title"><strong>${phone.phone_name}</strong></h5>
