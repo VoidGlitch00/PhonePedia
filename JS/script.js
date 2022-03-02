@@ -52,18 +52,19 @@ const loadDetails = phoneId => {
     `;
     fetch(url)
         .then(res => res.json())
-        .then(data => displayPhoneDetails(data))
+        .then(data => displayPhoneDetails(data.data))
 }
 
-
+// displaying details
 
 const displayPhoneDetails = details => {
+    console.log(details);
     const div = document.createElement("div");
     div.classList.add("card", "container", "align-items-center", "my-4");
 
     // data storing by error handling
-    const mainFeatures = details.mainFeatures ? details.mainFeatures: "";
-    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors: "";
+    const mainFeatures = details?.mainFeatures? details.mainFeatures: "";
+    const sensor = details?.mainFeatures?.sensors? details.mainFeatures.sensors: "";
     const other = details.others ? details.others : "";
 
     phoneDetails.innerHTML = "";
@@ -74,7 +75,7 @@ const displayPhoneDetails = details => {
 
     div.innerHTML = `
     <div class="card-body bg-light rounded ">
-    <img src="${details.data.image}" class="card-img-top mx-auto d-block w-50 my-2" alt="...">
+    <img src="${details.image}" class="card-img-top mx-auto d-block w-50 my-2" alt="...">
         <h5 class="card-title">Device Name: ${details.name}</h5>
         <p class="card-text"><strong>Brand</strong>: ${details.brand}</p>
         <p class="card-text"><strong>Release Date</strong>: ${details.releaseDate ? details.releaseDate : "No release Date found"}</p>
@@ -82,19 +83,19 @@ const displayPhoneDetails = details => {
         <ul class="list-group list-unstyled">
             <li>Chipset: ${mainFeatures.chipSet ? mainFeatures.chipSet : " "}</li>
             <li>Display-Size: ${mainFeatures.displaySize ? mainFeatures.displaySize : " "}</li>
-            <li>Memory : ${mainFeatures.memory ? mainFeatures.memory : " "}</li>
-            <li>Storage : ${mainFeatures.storage ? mainFeatures.storage : " "}</li>
+            <li>Memory : ${mainFeatures?.memory ? mainFeatures.memory : " "}</li>
+            <li>Storage : ${mainFeatures?.storage ? mainFeatures.storage : " "}</li>
         </ul>
         <br>
-        <p><strong>Sensors: </strong>${sensor.join()}</p>
+        <p><strong>Sensors: </strong>${sensor.join(", ")}</p>
         <p><strong>Other Informations: </strong></p>
         <ul class="list-group list-unstyled">
-            <li>Bluetooth : ${other.Bluetooth ? other.Bluetooth : "No"}</li>
-            <li>GPS: ${other.GPS ? other.GPS : "No"}</li>
-            <li>NFC: ${other.NFC ? other.NFC : "No"} </li>
-            <li>Radio: ${other.Radio ? other.Radio : "No"}</li>
-            <li>USB: ${other.USB ? other.USB : "No"} </li>
-            <li>WLAN: ${other.WLAN ? other.WLAN : "No"} </li>
+            <li>Bluetooth : ${other?.Bluetooth ? other.Bluetooth : "No"}</li>
+            <li>GPS: ${other?.GPS ? other.GPS : "No"}</li>
+            <li>NFC: ${other?.NFC ? other.NFC : "No"} </li>
+            <li>Radio: ${other?.Radio ? other.Radio : "No"}</li>
+            <li>USB: ${other?.USB ? other.USB : "No"} </li>
+            <li>WLAN: ${other?.WLAN ? other.WLAN : "No"} </li>
         </ul>
     </div>
     `;
