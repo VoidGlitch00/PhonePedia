@@ -1,12 +1,23 @@
+const errorText = document.getElementById("error");
+errorText.style.display = "none";
+
 const searchPhone = () => {
     const searchField = document.getElementById("search-field");
     const searchText = searchField.value;
     searchField.value = "";
-    const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
-    fetch(url)
-        .then(res => res.json())
-        .then(data => displaySearchResults(data.data.slice(0, 20)))
+    if (searchText == "") {
+        errorText.style.display = 'block';
+        errorText.innerHTML = "Please write your phone name to search"
+        phoneDetails.innerHTML = "";
+        searchResult.textContent = "";
+    } else {
+        const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => displaySearchResults(data.data.slice(0, 20)))
+    }
 }
+
 
 const displaySearchResults = phones => {
     const searchResult = document.getElementById("search-result");
@@ -17,13 +28,15 @@ const displaySearchResults = phones => {
         <div class="card rounded-3 align-items-center" style="background-color: lavender;">
         <img src="${phone.image}" class="card-img-top w-75" alt="...">
         <div class="card-body">
-          <h5 class="card-title">${phone.phone_name}</h5>
+          <h5 class="card-title"><strong>${phone.phone_name}</strong></h5>
+          <h5 class="card-title">${phone.brand}</h5>
           <button onclick="loadDetails('${phone.slug}')" class="btn btn-outline-info text-black px-5 te" type="button"
             id="details-button">Details</button>
         </div>
     </div>
         `;
         searchResult.appendChild(div);
+        errorText.style.display= "none";
     })
 }
 
@@ -35,22 +48,52 @@ const loadDetails = phoneId => {
         .then(data => displayPhoneDetails(data))
 }
 
+
+
 const displayPhoneDetails = details => {
     console.log(details);
     const phoneDetails = document.getElementById("display-details");
     const div = document.createElement("div");
     div.classList.add("card", "container", "align-items-center", "my-4");
+
+    // storing data with error handling when data is not available 
+    const mainFeatures = details.mainFeatures ? details.mainFeatures: "";
+    const sensor = details.mainFeatures.sensors ? details.mainFeatures.sensors: "";
+    const other = details.others ? details.others: "";
+
+    // clearing previous data shown on page
+    phoneDetails.innerHTML= "";
+    errorText.style.display= "none";
+    // scrolling to top
+    window.scrollTo(0, 250);
+
+    // pushing data into html element
     div.innerHTML = `
-    <img src="${details.data.image}" class="card-img-top w-25" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${details.data.brand}</h5>
-                <p class="card-text">${details.name}</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-            </ul>   
+    
+    <div class="card-body bg-light rounded ">
+    <img src="${details.data.image}" class="card-img-top mx-auto d-block w-50 my-2" alt="...">
+        <h5 class="card-title">Device Name: ${details.name}</h5>
+        <p class="card-text"><strong>Brand</strong>: ${details.brand}</p>
+        <p class="card-text"><strong>Release Date</strong>: ${details.releaseDate ? details.releaseDate: "No release Date found"}</p>
+        <p><strong>Main Features: </strong></p>
+        <ul class="list-group list-unstyled">
+            <li>Chipset: ${mainFeatures.chipSet ? mainFeatures.chipSet: " "}</li>
+            <li>Display-Size: ${mainFeatures.displaySize ? mainFeatures.displaySize: " "}</li>
+            <li>Memory : ${mainFeatures.memory ? mainFeatures.memory: " "}</li>
+            <li>Storage : ${mainFeatures.storage ? mainFeatures.storage: " "}</li>
+        </ul>
+        <br>
+        <p><strong>Sensors: </strong>  ${sensor.join()}</p>
+        <p><strong>Other Informations: </strong></p>
+        <ul class="list-group list-unstyled">
+            <li>Bluetooth : ${other.Bluetooth ? other.Bluetooth: "No"}</li>
+            <li>GPS: ${other.GPS ? other.GPS: "No"}</li>
+            <li>NFC: ${other.NFC ? other.NFC: "No"} </li>
+            <li>Radio: ${other.Radio ? other.Radio : "No"}</li>
+            <li>USB: ${other.USB ? other.USB: "No"} </li>
+            <li>WLAN: ${other.WLAN ? other.WLAN: "No"} </li>
+        </ul>
+    </div>
     `;
     phoneDetails.appendChild(div);
 }
